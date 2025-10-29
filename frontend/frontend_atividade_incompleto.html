@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trabalho Completo: Upload, Cadastro e Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+      :root {
+        --card-bg: #1e293b;
+        --card-border: 1px solid #334155;
+        --muted: #94a3b8;
+      }
+      
+      html, body { 
+        height: 100%;
+        background: #0f172a;
+        font-family: 'Inter', sans-serif;
+      }
+      
+      .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        display: grid;
+        gap: 2rem;
+      }
+
+      .card-module {
+        max-width: 500px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .message-box {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .message-box.error {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+      }
+
+      .message-box.success {
+        background-color: #dcfce7;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+      }
+
+      .submit-btn {
+        background: #3b82f6;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        font-weight: 600;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        margin-bottom: 1rem;
+      }
+
+      @media (min-width: 1024px) {
+        .main-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-container">
+      <!-- Card de Login -->
+      <div class="card-module">
+        <header>
+          <div class="brand">
+            <h1 class="text-white text-2xl font-bold">Login</h1>
+            <p class="text-gray-400">Entre com suas credenciais</p>
+          </div>
+        </header>
+
+        <div class="card" style="background: var(--card-bg); border: var(--card-border); padding: 1.5rem; border-radius: 0.5rem;">
+          <form id="loginForm" class="space-y-4">
+            <div>
+              <input type="text" id="username" name="username" 
+                     class="form-input bg-gray-900 border-gray-700 text-white" 
+                     placeholder="Nome de usuário" required>
+            </div>
+            <div>
+              <input type="password" id="password" name="password" 
+                     class="form-input bg-gray-900 border-gray-700 text-white" 
+                     placeholder="Senha" required>
+            </div>
+            <button type="submit" class="submit-btn w-full">
+              Entrar
+            </button>
+          </form>
+          <div id="loginMessageBox" class="message-box" style="display: none;"></div>
+        </div>
+      </div>
+
+      <!-- Card de Upload -->
+      <div class="card-module">
+        <header>
+          <div class="brand">
+            <h1 class="text-white text-2xl font-bold">Upload de Imagens</h1>
+            <p class="text-gray-400">Envie suas imagens (PNG, JPG)</p>
+          </div>
+        </header>
+
+        <div class="card" style="background: var(--card-bg); border: var(--card-border); padding: 1.5rem; border-radius: 0.5rem;">
+          <form id="uploadForm" class="space-y-4">
+            <input type="file" id="fileInput" name="meusArquivos" multiple accept="image/png, image/jpeg" 
+                   class="block w-full text-sm text-gray-400
+                   file:mr-4 file:py-2 file:px-4
+                   file:rounded-md file:border-0
+                   file:text-sm file:font-semibold
+                   file:bg-blue-500 file:text-white
+                   hover:file:bg-blue-600">
+            <button type="submit" class="submit-btn w-full">
+              Enviar Arquivos
+            </button>
+          </form>
+          <div id="messageBox" class="message-box" style="display: none;"></div>
+        </div>
+      </div>
+
+      <!-- Card de Registro -->
+      <div class="card-module">
+        <header>
+          <div class="brand">
+            <h1 class="text-white text-2xl font-bold">Registro</h1>
+            <p class="text-gray-400">Crie sua conta</p>
+          </div>
+        </header>
+
+        <div class="card" style="background: var(--card-bg); border: var(--card-border); padding: 1.5rem; border-radius: 0.5rem;">
+          <form id="registerForm" class="space-y-4">
+            <input type="text" id="registerUsername" name="username" 
+                   class="form-input bg-gray-900 border-gray-700 text-white" 
+                   placeholder="Nome de usuário" required>
+            <input type="email" id="registerEmail" name="email" 
+                   class="form-input bg-gray-900 border-gray-700 text-white" 
+                   placeholder="Email" required>
+            <input type="password" id="registerPassword" name="password" 
+                   class="form-input bg-gray-900 border-gray-700 text-white" 
+                   placeholder="Senha" required>
+            <button type="submit" class="submit-btn w-full">
+              Registrar
+            </button>
+          </form>
+          <div id="registerMessageBox" class="message-box" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Script de Login
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const messageBox = document.getElementById('loginMessageBox');
+
+        try {
+          const response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+          });
+
+          const data = await response.json();
+
+          messageBox.style.display = 'block';
+          
+          if (response.ok) {
+            messageBox.className = 'message-box success';
+            messageBox.textContent = 'Login realizado com sucesso!';
+            localStorage.setItem('token', data.token);
+          } else {
+            messageBox.className = 'message-box error';
+            messageBox.textContent = data.error || 'Credenciais inválidas';
+          }
+        } catch (error) {
+          messageBox.className = 'message-box error';
+          messageBox.textContent = 'Erro ao conectar com o servidor';
+          messageBox.style.display = 'block';
+        }
+      });
+
+      // Script de Upload
+      document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const files = document.getElementById('fileInput').files;
+        const messageBox = document.getElementById('messageBox');
+
+        if (files.length === 0) {
+          messageBox.style.display = 'block';
+          messageBox.className = 'message-box error';
+          messageBox.textContent = 'Por favor, selecione pelo menos um arquivo.';
+          return;
+        }
+
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+          formData.append('meusArquivos', files[i]);
+        }
+
+        try {
+          const response = await fetch('http://localhost:3000/upload', {
+            method: 'POST',
+            body: formData
+          });
+
+          const data = await response.json();
+
+          messageBox.style.display = 'block';
+          
+          if (response.ok) {
+            messageBox.className = 'message-box success';
+            messageBox.textContent = 'Arquivos enviados com sucesso!';
+            document.getElementById('uploadForm').reset();
+          } else {
+            messageBox.className = 'message-box error';
+            messageBox.textContent = data.error || 'Erro ao enviar arquivos';
+          }
+        } catch (error) {
+          messageBox.style.display = 'block';
+          messageBox.className = 'message-box error';
+          messageBox.textContent = 'Erro ao conectar com o servidor';
+        }
+      });
+
+      // Script de Registro
+      document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const username = document.getElementById('registerUsername').value.trim();
+        const email = document.getElementById('registerEmail').value.trim();
+        const password = document.getElementById('registerPassword').value.trim();
+        const messageBox = document.getElementById('registerMessageBox');
+
+        try {
+          const response = await fetch('http://localhost:3000/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, email, password })
+          });
+
+          const data = await response.json();
+
+          messageBox.style.display = 'block';
+          
+          if (response.ok) {
+            messageBox.className = 'message-box success';
+            messageBox.textContent = 'Registro realizado com sucesso!';
+            document.getElementById('registerForm').reset();
+          } else {
+            messageBox.className = 'message-box error';
+            messageBox.textContent = data.error || 'Erro ao registrar';
+          }
+        } catch (error) {
+          messageBox.style.display = 'block';
+          messageBox.className = 'message-box error';
+          messageBox.textContent = 'Erro ao conectar com o servidor';
+        }
+      });
+    </script>
+  </body>
+</html>
