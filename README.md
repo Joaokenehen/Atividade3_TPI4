@@ -2,6 +2,7 @@ Projeto Full-Stack: Upload de Arquivos + Sistema de Login
 Este é um projeto full-stack que combina upload de arquivos com autenticação de usuários. O backend em Node.js/Express gerencia uploads e autenticação, enquanto o frontend oferece uma interface moderna usando Tailwind CSS.
 
 Tecnologias Utilizadas
+
 Backend:
 Node.js
 Express.js
@@ -9,12 +10,14 @@ Multer (upload de arquivos)
 JWT (autenticação)
 bcryptjs (hash de senhas)
 CORS
+
 Frontend:
 HTML5
 Tailwind CSS
 JavaScript (ES6+)
 Fetch API
 FormData
+
 Funcionalidades Implementadas
 Sistema de Autenticação
 Registro de Usuários: Endpoint POST /register para criar novas contas
@@ -23,12 +26,14 @@ Segurança: Senhas hasheadas com bcrypt
 Token JWT: Gerado após login bem-sucedido
 Upload de Arquivos
 Múltiplos Uploads: Até 10 arquivos por requisição
+
 Validação:
 Apenas imagens .jpeg/.png
 Máximo 5MB por arquivo
 Armazenamento Seguro:
 Diretório uploads/ com nomes únicos
 Criação automática de diretórios
+
 Frontend
 Interface Moderna:
 Login/Registro com feedback visual
