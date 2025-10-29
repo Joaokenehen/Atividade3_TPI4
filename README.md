@@ -1,41 +1,49 @@
-Projeto: Upload Múltiplo de Arquivos com Node.js e Vanilla JS
-Desenvolvido por João Gustavo Quennehen.
-
-Este é um projeto full-stack simples que implementa uma funcionalidade robusta de upload de múltiplos arquivos. A aplicação consiste em um backend construído com Node.js e Express, responsável por processar e armazenar os arquivos, e um frontend interativo feito com HTML, Tailwind CSS e JavaScript puro (Vanilla JS).
+Projeto Full-Stack: Upload de Arquivos + Sistema de Login
+Este é um projeto full-stack que combina upload de arquivos com autenticação de usuários. O backend em Node.js/Express gerencia uploads e autenticação, enquanto o frontend oferece uma interface moderna usando Tailwind CSS.
 
 Tecnologias Utilizadas
 Backend:
 Node.js
 Express.js
-Multer (para manipulação de uploads multipart/form-data)
+Multer (upload de arquivos)
+JWT (autenticação)
+bcryptjs (hash de senhas)
 CORS
 Frontend:
 HTML5
 Tailwind CSS
-JavaScript (ES6+), utilizando Fetch API e FormData
-
+JavaScript (ES6+)
+Fetch API
+FormData
 Funcionalidades Implementadas
-Backend (server.js)
-API RESTful: Um endpoint POST /upload foi criado para receber os arquivos.
-Upload de Múltiplos Arquivos: O servidor está configurado para aceitar um array de até 10 arquivos por requisição.
-Validação de Arquivos: Regras de validação robustas foram implementadas no lado do servidor:
-Tipo de Arquivo: Permite apenas imagens do tipo .jpeg e .png.
-Tamanho Máximo: Limita cada arquivo a um tamanho máximo de 5MB.
-Quantidade Máxima: Restringe o número de arquivos por upload a 10.
-Armazenamento Seguro: Os arquivos são salvos no diretório uploads/ com nomes únicos, gerados a partir da data atual e de um número aleatório para evitar conflitos e sobreposições.
-Criação Automática de Diretório: A pasta uploads/ é criada automaticamente se não existir, garantindo que o servidor funcione corretamente na primeira execução.
-Tratamento de Erros: O backend retorna mensagens de erro claras e códigos de status HTTP apropriados para cada tipo de falha (ex: tipo de arquivo inválido, tamanho excedido, etc.).
-
-Frontend (frontend_atividade_incompleto.html)
-Interface Intuitiva: Uma interface limpa e moderna, estilizada com Tailwind CSS, que permite ao usuário selecionar múltiplos arquivos de imagem.
-Comunicação Assíncrona: Utiliza a Fetch API para enviar os arquivos ao backend de forma assíncrona, sem a necessidade de recarregar a página.
-Feedback em Tempo Real: O usuário recebe feedback visual instantâneo sobre o status do upload:
-O botão de envio é desabilitado e seu texto muda para "Enviando..." durante o processo.
-Mensagens de sucesso (verde) ou erro (vermelho) são exibidas dinamicamente com base na resposta do servidor.
-
-
-
-
-
-
-
+Sistema de Autenticação
+Registro de Usuários: Endpoint POST /register para criar novas contas
+Login: Endpoint POST /login com autenticação JWT
+Segurança: Senhas hasheadas com bcrypt
+Token JWT: Gerado após login bem-sucedido
+Upload de Arquivos
+Múltiplos Uploads: Até 10 arquivos por requisição
+Validação:
+Apenas imagens .jpeg/.png
+Máximo 5MB por arquivo
+Armazenamento Seguro:
+Diretório uploads/ com nomes únicos
+Criação automática de diretórios
+Frontend
+Interface Moderna:
+Login/Registro com feedback visual
+Upload de arquivos com preview
+Comunicação Assíncrona:
+Login com JWT
+Upload via FormData
+Feedback em Tempo Real:
+Mensagens de sucesso/erro
+Estado dos botões durante operações
+Autenticação Persistente:
+Token JWT armazenado no localStorage
+Verificação de autenticação para uploads
+Tratamento de Erros
+Mensagens claras para usuários
+Códigos HTTP apropriados
+Validação tanto no cliente quanto no servidor
+Este projeto demonstra uma implementação completa de autenticação e upload de arquivos, com foco em segurança e experiência do usuário.
